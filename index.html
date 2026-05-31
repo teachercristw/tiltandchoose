@@ -4,10 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tilt & Choose - Kindergarten Game</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Fredoka+One&family=Nunito:wght@700;900&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
   <style>
     /* CSS Variables for dynamic teacher themes */
     :root {
-      --game-font: 'Century Gothic', 'Tw Cen MT', 'Arial Rounded MT Bold', sans-serif;
+      --game-font: 'Fredoka One', 'Century Gothic', 'Tw Cen MT', 'Arial Rounded MT Bold', sans-serif;
       --game-font-weight: 700;
       --game-bg: linear-gradient(180deg, #87CEEB 0%, #98FB98 50%, #FFD93D 100%);
     }
@@ -32,7 +37,7 @@
       transition: background 0.5s ease;
     }
 
-    /* NEW: Dedicated layer for Media Backgrounds (Images/GIFs/Videos) */
+    /* Dedicated layer for Media Backgrounds (Images/GIFs/Videos) */
     #media-background-layer {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       z-index: 0; pointer-events: none; overflow: hidden;
@@ -61,7 +66,7 @@
     
     #game-container { position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; z-index: 10; }
     
-    .ui-layer { position: relative; z-index: 10; padding: 20px; height: 100%; display: flex; flex-direction: column; }
+    .ui-layer { position: relative; z-index: 10; padding: 0; height: 100%; display: flex; flex-direction: column; }
     
     /* Dynamic Score Board */
     .score-board { 
@@ -103,10 +108,23 @@
     button { font-size: 28px; padding: 18px 45px; cursor: pointer; border-radius: 20px; border: none; background: linear-gradient(90deg, #FF6B6B, #FF8E53); color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
     button:hover { background: linear-gradient(90deg, #FF8E53, #FF6B6B); transform: scale(1.08); }
     
-    /* Menu Screen styling update for better visibility with media backgrounds */
-    #menu-screen { background: rgba(0,0,0,0.4); padding: 50px; border-radius: 40px; display: inline-block; margin-top: 10vh; backdrop-filter: blur(5px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-    .menu-title { font-size: 80px; color: #fff; text-shadow: 4px 4px 0 #FF6B6B, 6px 6px 0 rgba(0,0,0,0.2); margin-top: 0; margin-bottom: 40px; animation: bounce 2s ease-in-out infinite; }
-    .teacher-title { font-size: 40px; color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,0.3); margin-top: 30px; animation: bounce 2s ease-in-out infinite; }
+    /* Menu Screen styling */
+    #menu-screen { 
+      background: transparent; 
+      padding: 40px 20px; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      align-items: center;
+      height: 100%; 
+      width: 100%; 
+    }
+    .menu-top { margin-top: 10vh; }
+    .menu-title { font-size: 110px; color: #fff; text-shadow: 4px 4px 0 #FF6B6B, 6px 6px 0 rgba(0,0,0,0.2); margin: 0; animation: bounce 2s ease-in-out infinite; line-height: 1.1; }
+    
+    .menu-bottom { margin-bottom: 5vh; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .teacher-title { font-size: 32px; color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,0.5); margin: 0; }
+    #start-btn { font-size: 32px; padding: 15px 50px; background: linear-gradient(90deg, #FF6B6B, #FFD93D, #4ECDC4); animation: bounce 1s ease-in-out infinite; border: 6px solid white; display: block;}
     
     .bottom-left-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; align-items: center; }
     .edit-btn { font-size: 24px; padding: 15px 30px; background: linear-gradient(90deg, #9B59B6, #8E44AD); margin: 0; }
@@ -149,21 +167,27 @@
     .decoration-3 { bottom: 20%; left: 8%; animation-delay: 2s; }
     .decoration-4 { bottom: 30%; right: 3%; animation-delay: 0.5s; }
     
-    #start-btn { font-size: 48px; padding: 30px 80px; background: linear-gradient(90deg, #FF6B6B, #FFD93D, #4ECDC4); animation: bounce 1s ease-in-out infinite; border: 8px solid white; margin: 0 auto; display: block;}
-    
     /* Win Screen Updated for Transparent Backgrounds and Score Lists */
-    #win-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;}
+    #win-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;}
     #win-text { font-size: 80px; color: #fff; text-shadow: 4px 4px 0 #FF6B6B; animation: pop 0.5s ease-out, bounce 1s ease-in-out infinite 0.5s; text-align: center; padding: 0 20px; margin-bottom: 10px;}
     
     #final-scores-list { margin-bottom: 40px; display: flex; flex-direction: column; gap: 15px; width: 80%; max-width: 600px; max-height: 40vh; overflow-y: auto;}
     .final-score-item { background: rgba(255,255,255,0.1); border: 3px solid #FFD93D; padding: 15px 30px; border-radius: 20px; font-size: 32px; color: white; display: flex; justify-content: space-between; align-items: center; text-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
     .final-score-winner { background: rgba(46, 204, 113, 0.4); border-color: #2ECC71; font-weight: 900;}
 
-    #play-screen { display: flex; flex-direction: column; height: 100%; width: 100%; }
+    /* Dimmed Play Screen Overlay for better contrast */
+    #play-screen { 
+      display: flex; flex-direction: column; 
+      position: fixed; top: 0; left: 0; 
+      width: 100vw; height: 100vh; 
+      background: rgba(0, 0, 0, 0.65); /* Darker overlay for play mode */
+      padding: 20px;
+      z-index: 10;
+    }
 
     @media (max-width: 1024px) {
-      #menu-screen { padding: 30px; margin-top: 5vh; }
-      .menu-title { font-size: 60px; }
+      .menu-title { font-size: 80px; }
+      .teacher-title { font-size: 26px; }
       .score-board { padding: 10px 20px; }
       #turn-indicator { font-size: 28px; }
       .team-badge { font-size: 20px; padding: 5px 12px; }
@@ -175,16 +199,16 @@
       .option h2 { font-size: 28px; }
       .option img { height: 20vh; min-height: 150px; }
       button { font-size: 22px; padding: 12px 25px; }
-      #start-btn { font-size: 36px; padding: 20px 50px; }
+      #start-btn { font-size: 28px; padding: 15px 40px; }
       #win-text { font-size: 60px; }
       .final-score-item { font-size: 24px; padding: 10px 20px; }
     }
 
     @media (max-width: 768px) {
       body { overflow-y: auto; overflow-x: hidden; } 
-      #menu-screen { padding: 20px; margin-top: 5vh; width: 90%; }
-      .menu-title { font-size: 48px; }
-      .teacher-title { font-size: 28px; }
+      .menu-title { font-size: 60px; }
+      .teacher-title { font-size: 20px; }
+      #start-btn { font-size: 24px; padding: 12px 30px; }
       
       .score-board { margin-bottom: 5px; padding: 10px; width: 98%; }
       #turn-indicator { font-size: 24px; margin-bottom: 5px; }
@@ -246,9 +270,13 @@
     <div class="ui-layer">
 
       <div id="menu-screen">
-        <h1 class="menu-title">🎯 Tilt & Choose! 🎯</h1>
-        <button id="start-btn" onclick="startGame()">🚀 START GAME</button>
-        <h2 class="teacher-title">Teacher Cris</h2>
+        <div class="menu-top">
+          <h1 class="menu-title">🎯 Tilt & Choose! 🎯</h1>
+        </div>
+        <div class="menu-bottom">
+          <button id="start-btn" onclick="startGame()">🚀 START GAME</button>
+          <h2 class="teacher-title">Made by: Teacher Cris Saranza</h2>
+        </div>
       </div>
 
       <div id="play-screen" style="display: none;">
@@ -319,13 +347,15 @@
             <label style="font-weight:bold; color: #2980B9;">How Many Teams?</label>
             <input type="number" id="theme-teams" min="2" max="10" value="2">
             
-            <label style="font-weight:bold; color: #2980B9; margin-top:15px; display:block;">Font Style:</label>
+            <label style="font-weight:bold; color: #2980B9; margin-top:15px; display:block;">Font Style (Child Friendly!):</label>
             <select id="theme-font">
-              <option value="'Century Gothic', 'Tw Cen MT', sans-serif">Century Gothic (Default)</option>
+              <option value="'Fredoka One', cursive">Fredoka (Chunky & Fun)</option>
+              <option value="'Baloo 2', cursive">Baloo (Bouncy & Round)</option>
+              <option value="'Nunito', sans-serif">Nunito (Friendly & Soft)</option>
+              <option value="'Comic Neue', cursive">Comic Neue (Clean Fun)</option>
+              <option value="'Century Gothic', 'Tw Cen MT', sans-serif">Century Gothic</option>
               <option value="Arial, sans-serif">Arial</option>
-              <option value="'Comic Sans MS', 'Chalkboard SE', cursive">Comic Sans (Fun)</option>
               <option value="'Times New Roman', serif">Times New Roman</option>
-              <option value="'Courier New', monospace">Typewriter</option>
             </select>
           </div>
 
@@ -497,7 +527,7 @@
     ];
 
     let themeSettings = {
-      fontFamily: "'Century Gothic', 'Tw Cen MT', 'Arial Rounded MT Bold', sans-serif",
+      fontFamily: "'Fredoka One', cursive",
       fontWeight: "700",
       totalTeams: 2,
       // NEW MEDIA SETTINGS
@@ -515,7 +545,7 @@
     function applyTheme() {
       document.documentElement.style.setProperty('--game-font', themeSettings.fontFamily);
       
-      document.getElementById('theme-font').value = themeSettings.fontFamily || "'Century Gothic', 'Tw Cen MT', sans-serif";
+      document.getElementById('theme-font').value = themeSettings.fontFamily || "'Fredoka One', cursive";
       document.getElementById('theme-teams').value = themeSettings.totalTeams || 2;
       
       totalTeams = parseInt(themeSettings.totalTeams) || 2;
@@ -538,7 +568,7 @@
       }
     }
 
-    // NEW: Handle background URL parsing
+    // Handle background URL parsing
     function applyBackgroundUrl() {
       const urlInput = document.getElementById('theme-bg-url').value.trim();
       if(urlInput) {
@@ -551,7 +581,7 @@
       }
     }
 
-    // UPDATED: Handle file upload with video detection
+    // Handle file upload with video detection
     function handleBackgroundUpload(input) {
       if (input.files && input.files[0]) {
         const file = input.files[0];
@@ -600,7 +630,7 @@
       playSound('click');
       document.getElementById('win-screen').style.display = 'none';
       document.getElementById('play-screen').style.display = 'none';
-      document.getElementById('menu-screen').style.display = 'block';
+      document.getElementById('menu-screen').style.display = 'flex';
       teamScores = new Array(totalTeams).fill(0);
       currentTeamTurn = 1;
     }
@@ -712,7 +742,7 @@
       }, 2000);
     }
 
-    // UPDATED: End Game rendering final scores
+    // End Game rendering final scores
     function endGame() {
       playSound('win');
       document.getElementById('play-screen').style.display = 'none';
