@@ -7,13 +7,15 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Fredoka+One&family=Nunito:wght@700;900&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 
   <style>
     /* CSS Variables for dynamic teacher themes */
     :root {
-      --game-font: 'Fredoka One', 'Century Gothic', 'Tw Cen MT', 'Arial Rounded MT Bold', sans-serif;
+      /* Century Gothic and other single-story 'a' fonts prioritized */
+      --game-font: 'Balsamiq Sans', 'Comic Neue', 'Century Gothic', 'Tw Cen MT', sans-serif;
       --game-font-weight: 700;
+      /* The #98FB98 here is the green color blending in the middle */
       --game-bg: linear-gradient(180deg, #87CEEB 0%, #98FB98 50%, #FFD93D 100%);
     }
 
@@ -120,11 +122,35 @@
       width: 100%; 
     }
     .menu-top { margin-top: 10vh; }
-    .menu-title { font-size: 110px; color: #fff; text-shadow: 4px 4px 0 #FF6B6B, 6px 6px 0 rgba(0,0,0,0.2); margin: 0; animation: bounce 2s ease-in-out infinite; line-height: 1.1; }
+    
+    /* Updated Title for better visibility */
+    .menu-title { 
+      font-size: 110px; 
+      color: #fff; 
+      -webkit-text-stroke: 4px #333; /* Strong outline to stand out */
+      text-shadow: 6px 6px 0 rgba(0,0,0,0.4); /* Stronger shadow */
+      margin: 0; 
+      animation: bounce 2s ease-in-out infinite; 
+      line-height: 1.1; 
+    }
     
     .menu-bottom { margin-bottom: 5vh; display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .teacher-title { font-size: 32px; color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,0.5); margin: 0; }
-    #start-btn { font-size: 32px; padding: 15px 50px; background: linear-gradient(90deg, #FF6B6B, #FFD93D, #4ECDC4); animation: bounce 1s ease-in-out infinite; border: 6px solid white; display: block;}
+    
+    /* Updated Start Button to solid maroon */
+    #start-btn { 
+      font-size: 32px; 
+      padding: 15px 50px; 
+      background: maroon !important; /* Solid maroon color */
+      color: white;
+      animation: bounce 1s ease-in-out infinite; 
+      border: 6px solid white; 
+      display: block;
+    }
+    #start-btn:hover {
+      background: #5c0000 !important; /* Darker maroon on hover */
+      transform: scale(1.08);
+    }
     
     .bottom-left-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; align-items: center; }
     .edit-btn { font-size: 24px; padding: 15px 30px; background: linear-gradient(90deg, #9B59B6, #8E44AD); margin: 0; }
@@ -349,13 +375,9 @@
             
             <label style="font-weight:bold; color: #2980B9; margin-top:15px; display:block;">Font Style (Child Friendly!):</label>
             <select id="theme-font">
-              <option value="'Fredoka One', cursive">Fredoka (Chunky & Fun)</option>
-              <option value="'Baloo 2', cursive">Baloo (Bouncy & Round)</option>
-              <option value="'Nunito', sans-serif">Nunito (Friendly & Soft)</option>
+              <option value="'Balsamiq Sans', cursive">Balsamiq Sans (Child Friendly)</option>
               <option value="'Comic Neue', cursive">Comic Neue (Clean Fun)</option>
               <option value="'Century Gothic', 'Tw Cen MT', sans-serif">Century Gothic</option>
-              <option value="Arial, sans-serif">Arial</option>
-              <option value="'Times New Roman', serif">Times New Roman</option>
             </select>
           </div>
 
@@ -527,7 +549,7 @@
     ];
 
     let themeSettings = {
-      fontFamily: "'Fredoka One', cursive",
+      fontFamily: "'Balsamiq Sans', cursive",
       fontWeight: "700",
       totalTeams: 2,
       // NEW MEDIA SETTINGS
@@ -545,7 +567,7 @@
     function applyTheme() {
       document.documentElement.style.setProperty('--game-font', themeSettings.fontFamily);
       
-      document.getElementById('theme-font').value = themeSettings.fontFamily || "'Fredoka One', cursive";
+      document.getElementById('theme-font').value = themeSettings.fontFamily || "'Balsamiq Sans', cursive";
       document.getElementById('theme-teams').value = themeSettings.totalTeams || 2;
       
       totalTeams = parseInt(themeSettings.totalTeams) || 2;
