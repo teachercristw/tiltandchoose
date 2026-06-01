@@ -604,6 +604,8 @@
     let teamScores = [0, 0]; 
     let currentTeamTurn = 1;
     let questionPool = []; let currentQuestion = null; let canAnswer = false;
+    let countdownInterval; 
+    let answerTimeout;
 
     // --- Theme Logic ---
     function applyTheme() {
@@ -706,6 +708,13 @@
       document.getElementById('menu-screen').style.display = 'flex';
       teamScores = new Array(totalTeams).fill(0);
       currentTeamTurn = 1;
+      
+      canAnswer = false; 
+      clearInterval(countdownInterval); 
+      clearTimeout(answerTimeout); 
+      
+      document.getElementById('feedback-overlay').style.display = "none";
+      document.getElementById('camera-timer-overlay').style.display = "none";
     }
 
     function updateScores() {
@@ -767,7 +776,8 @@
       timerOverlay.innerText = count;
       playSound('click'); 
 
-      let countdownInterval = setInterval(() => {
+      clearInterval(countdownInterval); 
+      countdownInterval = setInterval(() => { 
         count--;
         if (count > 0) {
           timerOverlay.innerText = count;
@@ -807,7 +817,8 @@
       
       currentTeamTurn = (currentTeamTurn % totalTeams) + 1;
       
-      setTimeout(() => {
+      clearTimeout(answerTimeout); 
+      answerTimeout = setTimeout(() => { 
         document.getElementById('left-option').classList.remove('highlight');
         document.getElementById('right-option').classList.remove('highlight');
         feedbackOverlay.style.display = "none";
